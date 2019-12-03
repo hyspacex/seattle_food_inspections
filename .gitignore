@@ -5,7 +5,7 @@ Food_Establishment_Inspection_Data.csv
 altair-data*
 
 # ignore .ipynb checkpoints
-.ipynb_checkpoints
+.ipynb_checkpoints/
 
 # General
 .DS_Store
