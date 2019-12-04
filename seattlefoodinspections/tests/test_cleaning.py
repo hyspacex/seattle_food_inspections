@@ -1,13 +1,7 @@
 '''
 Tests for the cleaning_functions.py file
 '''
-
-import os
-import sys
-
-sys.path.append(os.getcwd() + '/..')
-
-import cleaning_functions as cf
+import .cleaning_functions as cf
 import pandas as pd
 
 def test_dataframe_with_columns1():
