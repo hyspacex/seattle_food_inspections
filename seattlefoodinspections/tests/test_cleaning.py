@@ -1,9 +1,7 @@
 '''
 Tests for the cleaning_functions.py file
 '''
-
-
-
+# Now you can import your module
 from .. import cleaning_functions as cf
 import pandas as pd
 
