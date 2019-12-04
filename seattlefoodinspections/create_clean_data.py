@@ -1,28 +1,28 @@
 '''
 Cleans the census data.
 '''
-
-import cleaning_functions as cf
+#Import statements
 import pandas as pd
 
-'''
-MARITAL DATAFRAME
-'''
+import cleaning_functions as cf
 
+
+### Marital dataframe creation
 DF_MARITAL = pd.read_csv(
     "./data/raw_data/Marital_ACS_17_5YR_S1201_with_ann.csv")
 # Removes the top row, which is useless
 DF_MARITAL = cf.remove_row_from_data_frame(DF_MARITAL)
 # Extracts and rename the proper columns
+
 DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
                                        ['GEO.id2', 'HC01_EST_VC01',
-                                       'HC02_EST_VC01', 'HC03_EST_VC01',
-                                       'HC04_EST_VC01', 'HC05_EST_VC01',
-                                       'HC06_EST_VC01'],
+                                        'HC02_EST_VC01', 'HC03_EST_VC01',
+                                        'HC04_EST_VC01', 'HC05_EST_VC01',
+                                        'HC06_EST_VC01'],
                                        ['zipcode', 'Population',
-                                       'No_Married(%)', 'Widowed(%)',
-                                       'Divorced(%)', 'Separated(%)',
-                                       'Never_Married(%)'])
+                                        'No_Married(%)', 'Widowed(%)',
+                                        'Divorced(%)', 'Separated(%)',
+                                        'Never_Married(%)'])
 # Defining an oft used list of column names.
 PERCENT_COLUMNS = ['No_Married(%)', 'Widowed(%)', 'Divorced(%)', 'Separated(%)',
                    'Never_Married(%)']
@@ -42,22 +42,24 @@ DF_MARITAL = cf.data_from_percents_and_raw_totals(DF_MARITAL, PERCENT_COLUMNS,
 DF_MARITAL = cf.columns_to_int(DF_MARITAL, RAW_TOT_COLUMNS)
 
 
-'''
-INCOME INFORMATION
-'''
+
+### INCOME INFORMATION
 DF_INCOME = pd.read_csv("./data/raw_data/Income_ACS_17_5YR_S1903_with_ann.csv")
 # Remove an extra row
 DF_INCOME = cf.remove_row_from_data_frame(DF_INCOME)
 # Extract the useful rows
-DF_INCOME = cf.dataframe_with_columns(DF_INCOME, ['GEO.id2', 'HC01_EST_VC02',
-                                      'HC02_EST_VC02', 'HC03_EST_VC02'],
+DF_INCOME = cf.dataframe_with_columns(DF_INCOME,
+                                      ['GEO.id2', 'HC01_EST_VC02',
+                                       'HC02_EST_VC02', 'HC03_EST_VC02'],
                                       ['zipcode', 'Number_Households',
-                                      'Percent_Distribution_Housesholds',
-                                      'Median_Income_Households'] )
-# Remove dashes from the data, sets them as zero.
-DF_INCOME = cf.remove_dashes_from_data(DF_INCOME, ['Number_Households',
                                        'Percent_Distribution_Housesholds',
                                        'Median_Income_Households'])
+# Remove dashes from the data, sets them as zero.
+DF_INCOME = cf.remove_dashes_from_data(DF_INCOME,
+                                       ['Number_Households',
+                                        'Percent_Distribution_Housesholds',
+                                        'Median_Income_Households'])
+
 
 
 '''
