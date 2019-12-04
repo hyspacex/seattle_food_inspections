@@ -1,4 +1,6 @@
-﻿# Seattle Food Inspection Project
+[![Build Status](https://travis-ci.com/hyspacex/Seattle-Food-Inspections.svg?branch=master)](https://travis-ci.com/hyspacex/Seattle-Food-Inspections)
+
+# Seattle Food Inspection Project
 
 ## Project Goal
 
