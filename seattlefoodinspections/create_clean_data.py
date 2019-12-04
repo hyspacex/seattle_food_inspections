@@ -1,5 +1,5 @@
 '''
-Cleans the census and INSPECTION data.
+Cleans and combines the census and INSPECTION data.
 '''
 #Import statements
 import pandas as pd
@@ -14,11 +14,10 @@ INSPECTDATE = 'Inspection Date'
 RESTAURANTNAME = 'Program Identifier'
 ADDRESS = 'Address'
 GRADE = 'Grade'
-SEATTLEZIPS =  [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108,
-                98109, 98112, 98115, 98116, 98117, 98118, 98119, 98121,
-                98122, 98125, 98126, 98133, 98134, 98136, 98144, 98146,
-                98154, 98155, 98164, 98168, 98174, 98177, 98178, 98195,
-                98199]
+SEATTLEZIPS = [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108, 98109,
+               98112, 98115, 98116, 98117, 98118, 98119, 98121, 98122, 98125,
+               98126, 98133, 98134, 98136, 98144, 98146, 98154, 98155, 98164,
+               98168, 98174, 98177, 98178, 98195, 98199]
 
 ### Marital dataframe creation
 DF_MARITAL = pd.read_csv(
@@ -42,7 +41,7 @@ PERCENT_COLUMNS = ['No_Married(%)', 'Widowed(%)', 'Divorced(%)', 'Separated(%)',
 DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
 # Turns the percents to floats and the population number to an int
 DF_MARITAL = cf.columns_to_float(DF_MARITAL, PERCENT_COLUMNS)
-DF_MARITAL = cf.columns_to_int(DF_MARITAL, ['Population','zipcode'])
+DF_MARITAL = cf.columns_to_int(DF_MARITAL, ['Population', 'zipcode'])
 # Defining another colection of column names.
 RAW_TOT_COLUMNS = ['No_Married', 'Widowed', 'Divorced', 'Separated',
                    'Never_Married']
@@ -76,30 +75,28 @@ DF_INCOME = cf.columns_to_int(DF_INCOME, ['zipcode'])
 
 ### Food INSPECTION data frame creation
 INSPECTION = pd.read_csv('./data/raw_data/Food_Establishment_INSPECTION.csv',
-                        low_memory=False)
+                         low_memory=False)
 #rename columns for consistency
 INSPECTION.rename(columns={'Zip Code': ZIPCODE}, inplace=True)
 # convert dates in 'INSPECTION Date' to date time
-INSPECTION[INSPECTDATE]=pd.to_datetime(INSPECTION[INSPECTDATE])
+INSPECTION[INSPECTDATE] = pd.to_datetime(INSPECTION[INSPECTDATE])
 # sort by INSPECTION date then remove duplicates
-INSPECTION = INSPECTION.sort_values(by=[INSPECTDATE]).drop_duplicates(
-                subset = [RESTAURANTNAME, ADDRESS], keep = 'last')
+INSPECTION = INSPECTION.sort_values(by=[INSPECTDATE]
+             ).drop_duplicates(subset=[RESTAURANTNAME, ADDRESS], keep='last')
 # drop na/nan values in appropriate columns
-INSPECTION_CLEANED = INSPECTION.dropna(subset = [LONGITITUDE])
-INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset = [GRADE])
-INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset = [ZIPCODE])
+INSPECTION_CLEANED = INSPECTION.dropna(subset=[LONGITITUDE])
+INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[GRADE])
+INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[ZIPCODE])
 INSPECTION_CLEANED = INSPECTION_CLEANED.sort_values(by=[INSPECTDATE])
 # convert the data type of Zip Code to integer
-INSPECTION_CLEANED[ZIPCODE]=INSPECTION_CLEANED[ZIPCODE].astype(int)
-INSPECTION_ZIPS = INSPECTION_CLEANED[
-                    INSPECTION_CLEANED[ZIPCODE].isin(SEATTLEZIPS)]
+INSPECTION_CLEANED[ZIPCODE] = INSPECTION_CLEANED[ZIPCODE].astype(int)
+INSPECTION_ZIPS = INSPECTION_CLEANED[INSPECTION_CLEANED[ZIPCODE
+                  ].isin(SEATTLEZIPS)]
 INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv',index=False)
 
 
-'''
-COMBINE DATAFRAMES
-'''
 
+##COMBINE DATAFRAMES
 # first, combine census data
 DF_TOTAL = mf.merge_dataframes(DF_MARITAL, DF_INCOME, 'zipcode')
 #output combined census data
