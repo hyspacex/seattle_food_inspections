@@ -4,7 +4,7 @@ Cleans the census data.
 #Import statements
 import pandas as pd
 
-import cleaning_functions as cf
+from . import cleaning_functions as cf
 
 
 ### Marital dataframe creation
