@@ -1,5 +1,5 @@
 '''
-Python code to clean the census data.
+Python code to clean the census and food inspection data.
 '''
 
 import pandas as pd
@@ -63,11 +63,3 @@ def data_from_percents_and_raw_totals(data_frame, column_list,
         data_frame[new_list[j]] = (data_frame[column_list[j]]
                                    * data_frame[tot_row]) / 100
     return data_frame
-
-def merge_dataframes(df_1, df_2, merge_on):
-    '''
-    Merges two dataframes on the common column named merge_on.
-    '''
-    new_df = pd.merge(left=df_1, right=df_2, left_on=merge_on,
-                      right_on=merge_on)
-    return new_df
