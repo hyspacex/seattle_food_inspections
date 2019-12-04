@@ -1,3 +1,6 @@
+plugins:
+  pep8:
+    enabled: true
 language: python
 # command to install dependencies
 install:
