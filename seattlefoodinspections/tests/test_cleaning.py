@@ -1,10 +1,7 @@
 '''
 Tests for the cleaning_functions.py file
 '''
-
-
-
-from .. import cleaning_functions as cf
+import ukbparse.cleaning_functions as cf
 import pandas as pd
 
 def test_dataframe_with_columns1():
