@@ -1,2 +1,3 @@
-import sys
-sys.path.append("/path/to/seattlefoodinspections/")
+'''
+__init__ file
+'''

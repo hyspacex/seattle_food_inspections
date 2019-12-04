@@ -9,9 +9,10 @@ def dataframe_with_columns(data_frame, columns_list, new_names):
     Extracts certain columns from the dataframe and changes the names of
     the columns
     '''
-    data_frame_subset = data_frame[[s for s in columns_list]] #extracts columns
-    data_frame_subset.columns = [s for s in new_names] #renames columns
+    data_frame_subset = data_frame[columns_list] #extracts columns
+    data_frame_subset.columns = new_names #renames columns
     return data_frame_subset
+
 
 def remove_row_from_data_frame(data_frame):
     '''
@@ -24,12 +25,12 @@ def remove_dashes_from_data(data_frame, cols):
     Remove the dashes from the dataset, but only
     looks at the columns in "cols"
     '''
-    for s in cols:
-        vec = [f for f in data_frame[s]]
-        for j in range(0,len(vec)):
-            if vec[j] == "-":
-                vec[j] = 0
-        data_frame[s] = vec
+    for col_name in cols:
+        vec = list(data_frame[col_name])
+        for vec_local, vec_elem in enumerate(vec):
+            if vec_elem == "-":
+                vec[vec_local] = 0
+        data_frame[col_name] = vec
     return data_frame
 
 def columns_to_float(data_frame, col):
@@ -37,8 +38,8 @@ def columns_to_float(data_frame, col):
     Convertes a collection of columns in a dataframe to a
     float type.
     '''
-    for s in col:
-        data_frame[s] = [float(f) for f in data_frame[s]]
+    for col_name in col:
+        data_frame[col_name] = [float(f) for f in data_frame[col_name]]
     return data_frame
 
 def columns_to_int(data_frame, col):
@@ -46,11 +47,12 @@ def columns_to_int(data_frame, col):
     Convertes a collection of columns in a dataframe to a
     int type.
     '''
-    for s in col:
-        data_frame[s] = [int(f) for f in data_frame[s]]
+    for col_name in col:
+        data_frame[col_name] = [int(f) for f in data_frame[col_name]]
     return data_frame
 
-def data_from_percents_and_raw_totals(data_frame, column_list, tot_row, new_list):
+def data_from_percents_and_raw_totals(data_frame, column_list,
+                                      tot_row, new_list):
     '''
     The dataframe contains information of percents (in the column_list) and
     a total variable (in tot_row). This creates new columns (labeled by
