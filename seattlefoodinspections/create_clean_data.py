@@ -20,11 +20,11 @@ DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
                                        'HC04_EST_VC01', 'HC05_EST_VC01',
                                        'HC06_EST_VC01'],
                                        ['zipcode', 'Population',
-                                       'Married(%)', 'Widowed(%)',
+                                       'No_Married(%)', 'Widowed(%)',
                                        'Divorced(%)', 'Separated(%)',
                                        'Never_Married(%)'])
 # Defining an oft used list of column names.
-PERCENT_COLUMNS = ['Married(%)', 'Widowed(%)', 'Divorced(%)', 'Separated(%)',
+PERCENT_COLUMNS = ['No_Married(%)', 'Widowed(%)', 'Divorced(%)', 'Separated(%)',
                    'Never_Married(%)']
 # Remove dashes from the data
 DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
@@ -32,7 +32,7 @@ DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
 DF_MARITAL = cf.columns_to_float(DF_MARITAL, PERCENT_COLUMNS)
 DF_MARTIAL = cf.columns_to_int(DF_MARITAL, ["Population"])
 # Defining another colection of column names.
-RAW_TOT_COLUMNS = ['Married', 'Widowed', 'Divorced', 'Separated',
+RAW_TOT_COLUMNS = ['No_Married', 'Widowed', 'Divorced', 'Separated',
                    'Never_Married']
 # Create the new columns which contain the raw totals for all the
 # statistics in the marriage center.
@@ -66,4 +66,4 @@ COMBINE DATAFRAMES
 
 DF_TOTAL = cf.merge_dataframes(DF_MARITAL, DF_INCOME, "zipcode")
 
-DF_TOTAL.to_csv("./data/clean_data/trial.csv", index=False)
+DF_TOTAL.to_csv("./data/clean_data/clean_census.csv", index=False)
