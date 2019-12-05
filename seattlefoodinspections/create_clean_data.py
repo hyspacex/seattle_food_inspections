@@ -81,8 +81,9 @@ INSPECTION.rename(columns={'Zip Code': ZIPCODE}, inplace=True)
 # convert dates in 'INSPECTION Date' to date time
 INSPECTION[INSPECTDATE] = pd.to_datetime(INSPECTION[INSPECTDATE])
 # sort by INSPECTION date then remove duplicates
-INSPECTION = INSPECTION.sort_values(by=[INSPECTDATE]
-             ).drop_duplicates(subset=[RESTAURANTNAME, ADDRESS], keep='last')
+INSPECTION = INSPECTION.sort_values(
+    by=[INSPECTDATE]
+).drop_duplicates(subset=[RESTAURANTNAME, ADDRESS], keep='last')
 # drop na/nan values in appropriate columns
 INSPECTION_CLEANED = INSPECTION.dropna(subset=[LONGITITUDE])
 INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[GRADE])
@@ -91,7 +92,7 @@ INSPECTION_CLEANED = INSPECTION_CLEANED.sort_values(by=[INSPECTDATE])
 # convert the data type of Zip Code to integer
 INSPECTION_CLEANED[ZIPCODE] = INSPECTION_CLEANED[ZIPCODE].astype(int)
 INSPECTION_ZIPS = INSPECTION_CLEANED[INSPECTION_CLEANED[ZIPCODE
-                  ].isin(SEATTLEZIPS)]
+].isin(SEATTLEZIPS)]
 INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv', index=False)
 
 

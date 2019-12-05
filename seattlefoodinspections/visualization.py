@@ -15,14 +15,14 @@ def make_folium_map():
     and navigated
     '''
     map_data = pd.read_csv('./data/clean_data/combined.csv',
-                       low_memory=False)
-    map = folium.Map(
+                           low_memory=False)
+    folium_map = folium.Map(
         tiles='Stamen Toner',
         location=[47.6, -122.346742],
         zoom_start=11)
 
     # cluster points
-    marker_cluster = folium.plugins.MarkerCluster().add_to(m)
+    marker_cluster = folium.plugins.MarkerCluster().add_to(folium_map)
 
     # Add marker for each restaurant in the database
     for index, row in map_data.tail(1200).iterrows():
@@ -31,13 +31,13 @@ def make_folium_map():
             location=[row['Latitude'], row['Longitude']],
             # use the business name as the pop
             popup='Restaurant: '+str(row['Inspection Business Name'])+
-                  '<br>Rating: '+str(row['Inspection Result'])+
-                  '<br>Date: '+str(row['Inspection Date']),
+            '<br>Rating: '+str(row['Inspection Result'])+
+            '<br>Date: '+str(row['Inspection Date']),
             icon=folium.Icon()
         ).add_to(marker_cluster)
 
     # Display map
-    return map
+    return folium_map
 
 def make_altair_map():
     '''
@@ -84,7 +84,7 @@ def make_altair_map():
         longitude='Longitude:Q',
         latitude='Latitude:Q',
         tooltip=['Inspection Business Name', 'Grade'],
-        color=alt.Color('Grade:N',legend=None)
+        color=alt.Color('Grade:N', legend=None)
     ).transform_filter(multi)
 
     # histogram of inspection results
