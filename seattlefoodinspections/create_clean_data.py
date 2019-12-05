@@ -3,9 +3,8 @@ Cleans and combines the census and INSPECTION data.
 '''
 #Import statements
 import pandas as pd
-
-import cleaning_functions as cf
-import merging_functions as mf
+from . import cleaning_functions as cf
+from . import merging_functions as mf
 
 #Constants
 ZIPCODE = 'zipcode'

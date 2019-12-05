@@ -35,6 +35,7 @@ def make_folium_map():
             '<br>Date: '+str(row['Inspection Date']),
             icon=folium.Icon()
         ).add_to(marker_cluster)
+        index_pylint = index
 
     # Display map
     return folium_map

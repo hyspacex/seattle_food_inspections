@@ -2,8 +2,6 @@
 Python code to clean the census and food inspection data.
 '''
 
-import pandas as pd
-
 def dataframe_with_columns(data_frame, columns_list, new_names):
     '''
     Extracts certain columns from the dataframe and changes the names of
