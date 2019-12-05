@@ -5,7 +5,7 @@ functions for visualizing food inspection and census dataset
 import json
 import pandas as pd
 import folium
-from folium import plugins
+from folium.plugins import MarkerCluster
 import altair as alt
 import geopandas as gpd
 
@@ -25,7 +25,7 @@ def make_folium_map():
     marker_cluster = folium.plugins.MarkerCluster().add_to(folium_map)
 
     # Add marker for each restaurant in the database
-    for index, row in map_data.tail(1200).iterrows():
+    for _, row in map_data.tail(1200).iterrows():
         folium.Marker(
             # pull lat and lon from entry and use as coordinates for the marker
             location=[row['Latitude'], row['Longitude']],
@@ -35,7 +35,6 @@ def make_folium_map():
             '<br>Date: '+str(row['Inspection Date']),
             icon=folium.Icon()
         ).add_to(marker_cluster)
-        index_pylint = index
 
     # Display map
     return folium_map
