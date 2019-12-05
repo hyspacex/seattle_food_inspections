@@ -92,7 +92,7 @@ INSPECTION_CLEANED = INSPECTION_CLEANED.sort_values(by=[INSPECTDATE])
 INSPECTION_CLEANED[ZIPCODE] = INSPECTION_CLEANED[ZIPCODE].astype(int)
 INSPECTION_ZIPS = INSPECTION_CLEANED[INSPECTION_CLEANED[ZIPCODE
                   ].isin(SEATTLEZIPS)]
-INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv',index=False)
+INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv', index=False)
 
 
 

@@ -14,9 +14,9 @@ def make_folium_map():
     function for making folium map of seattle restaurants that can be zoomed
     and navigated
     '''
-    DATA = pd.read_csv('./data/clean_data/combined.csv',
+    map_data = pd.read_csv('./data/clean_data/combined.csv',
                        low_memory=False)
-    m = folium.Map(
+    map = folium.Map(
         tiles='Stamen Toner',
         location=[47.6, -122.346742],
         zoom_start=11)
@@ -25,19 +25,19 @@ def make_folium_map():
     marker_cluster = folium.plugins.MarkerCluster().add_to(m)
 
     # Add marker for each restaurant in the database
-    for i, r in DATA.tail(1200).iterrows():
+    for index, row in map_data.tail(1200).iterrows():
         folium.Marker(
             # pull lat and lon from entry and use as coordinates for the marker
-            location=[r['Latitude'], r['Longitude']],
+            location=[row['Latitude'], row['Longitude']],
             # use the business name as the pop
-            popup='Restaurant: '+str(r['Inspection Business Name'])
-                   +'<br>Rating: '+str(r['Inspection Result'])
-                   +'<br>Date: '+str(r['Inspection Date']),
+            popup='Restaurant: '+str(row['Inspection Business Name'])+
+                  '<br>Rating: '+str(row['Inspection Result'])+
+                  '<br>Date: '+str(row['Inspection Date']),
             icon=folium.Icon()
         ).add_to(marker_cluster)
 
-    # Display m
-    return m
+    # Display map
+    return map
 
 def make_altair_map():
     '''
@@ -48,7 +48,8 @@ def make_altair_map():
     inspection = pd.read_csv('./data/clean_data/combined.csv',
                              low_memory=False)
     #import seattle zip codes
-    seattlezip_geojson = 'https://raw.githubusercontent.com/seattleio/seattle-boundaries-data/master/data/zip-codes.geojson'
+    seattlezip_geojson = 'https://raw.githubusercontent.com/seattleio/seattle'\
+                          '-boundaries-data/master/data/zip-codes.geojson'
     gdf = gpd.read_file(seattlezip_geojson)
     # merge combined data with geojson
     # first, rename zip code column in geojson data set and change to int
