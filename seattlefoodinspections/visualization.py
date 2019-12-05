@@ -5,7 +5,7 @@ functions for visualizing food inspection and census dataset
 import json
 import pandas as pd
 import folium
-from folium.plugins import MarkerCluster
+from folium.plugins import MarkerCluster # pylint: disable=unused-import
 import altair as alt
 import geopandas as gpd
 
