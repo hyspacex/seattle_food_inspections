@@ -4,8 +4,9 @@ Food_Establishment_Inspection_Data.csv
 # ignore altair json data output
 altair-data*
 
-# ignore .ipynb checkpoints
+# ignore .ipynb checkpoints and pycache
 .ipynb_checkpoints/
+__pycache__/
 
 # General
 .DS_Store

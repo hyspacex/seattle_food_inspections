@@ -6,6 +6,7 @@ import pandas as pd
 
 # Import the cleaning_functions
 from .. import cleaning_functions as cf
+from .. import merging_functions as mf
 
 def test_dataframe_with_columns1():
     '''
@@ -66,10 +67,10 @@ def test_percents():
 
 def test_merge():
     '''
-    tests cf.merge_dataframes
+    tests mf.merge_dataframes
     '''
     df1 = pd.DataFrame({'A':[1, 2], 'B':[2, 3]})
     df2 = pd.DataFrame({'A':[1, 2], 'C':[4, 5]})
     c_df = pd.DataFrame({'A':[1, 2], 'B':[2, 3], 'C':[4, 5]})
-    new_df = cf.merge_dataframes(df1, df2, 'A')
+    new_df = mf.merge_dataframes(df1, df2, 'A')
     assert new_df.equals(c_df)
