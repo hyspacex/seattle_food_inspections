@@ -16,7 +16,7 @@ def make_folium_map():
     '''
     map_data = pd.read_csv('./data/clean_data/combined.csv',
                            low_memory=False)
-    # associate color with inspection result 
+    # associate color with inspection result
     map_data['marker_color'] = map_data['marker_color'].replace([1.0], 'lightgreen')
     map_data['marker_color'] = map_data['marker_color'].replace([2.0], 'orange')
     map_data['marker_color'] = map_data['marker_color'].replace([3.0], 'red')
@@ -36,13 +36,14 @@ def make_folium_map():
             # pull lat and lon from entry and use as coordinates for the marker
             location=[row['Latitude'], row['Longitude']],
             # use the business name as the pop
-            popup='<b>Restaurant</b>: '+str(row['Inspection Business Name'])+
-                '<br><b>Result from most recent inspection</b>: '+str(row['Inspection Result'])+
-                '<br><b>Overall Grade</b>: '+str(row['Grade'])+
-                '<br><b>Date</b>: '+str(row['Inspection Date']),
+            popup='<b>Restaurant</b>: '+str(row['Inspection Business Name']) +
+            '<br><b>Result from most recent inspection</b>: ' +
+            str(row['Inspection Result']) +
+            '<br><b>Overall Grade</b>: ' + str(row['Grade']) +
+            '<br><b>Date</b>: ' + str(row['Inspection Date']),
             icon=folium.Icon(color=row['marker_color'])
         ).add_to(marker_cluster)
-        
+
     return folium_map
 
 def make_altair_map():
