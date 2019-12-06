@@ -16,6 +16,12 @@ def make_folium_map():
     '''
     map_data = pd.read_csv('./data/clean_data/combined.csv',
                            low_memory=False)
+    # associate color with inspection result 
+    map_data['marker_color'] = map_data['marker_color'].replace([1.0], 'lightgreen')
+    map_data['marker_color'] = map_data['marker_color'].replace([2.0], 'orange')
+    map_data['marker_color'] = map_data['marker_color'].replace([3.0], 'red')
+    map_data['marker_color'] = map_data['marker_color'].replace([4.0], 'black')
+
     folium_map = folium.Map(
         tiles='Stamen Toner',
         location=[47.6, -122.346742],
@@ -25,18 +31,18 @@ def make_folium_map():
     marker_cluster = folium.plugins.MarkerCluster().add_to(folium_map)
 
     # Add marker for each restaurant in the database
-    for _, row in map_data.tail(1200).iterrows():
+    for _, row in map_data.iterrows():
         folium.Marker(
             # pull lat and lon from entry and use as coordinates for the marker
             location=[row['Latitude'], row['Longitude']],
             # use the business name as the pop
-            popup='Restaurant: '+str(row['Inspection Business Name'])+
-            '<br>Rating: '+str(row['Inspection Result'])+
-            '<br>Date: '+str(row['Inspection Date']),
-            icon=folium.Icon()
+            popup='<b>Restaurant</b>: '+str(row['Inspection Business Name'])+
+                '<br><b>Result from most recent inspection</b>: '+str(row['Inspection Result'])+
+                '<br><b>Overall Grade</b>: '+str(row['Grade'])+
+                '<br><b>Date</b>: '+str(row['Inspection Date']),
+            icon=folium.Icon(color=row['marker_color'])
         ).add_to(marker_cluster)
-
-    # Display map
+        
     return folium_map
 
 def make_altair_map():
