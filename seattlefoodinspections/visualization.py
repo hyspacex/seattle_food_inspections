@@ -44,8 +44,8 @@ def make_folium_map():
             '<br><b>Date</b>: ' + str(row['Inspection Date']),
             icon=folium.Icon(color=row['marker_color'])
         ).add_to(marker_cluster)
-
-    return folium_map
+    display = folium_map.save("map.html")
+    return display
 
 def make_altair_map():
     '''
