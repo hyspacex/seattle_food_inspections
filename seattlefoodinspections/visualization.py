@@ -17,6 +17,7 @@ def make_folium_map():
     map_data = pd.read_csv('./data/clean_data/combined.csv',
                            low_memory=False)
     # associate color with inspection result
+    map_data['marker_color'] = map_data['Grade']
     map_data['marker_color'] = map_data['marker_color'].replace([1.0], 'lightgreen')
     map_data['marker_color'] = map_data['marker_color'].replace([2.0], 'orange')
     map_data['marker_color'] = map_data['marker_color'].replace([3.0], 'red')
