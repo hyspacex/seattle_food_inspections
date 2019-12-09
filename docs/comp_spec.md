@@ -1,40 +1,92 @@
-﻿﻿﻿# Component Specification
-## Software Components
-### 1. Getting Data and cleaning data
-We want to keep up-to-date with the latest food inspection scores. This means that we need to keep up with the latest CSV file from King County. We call this function GetData()```def GetData(url=default_url):	return pd.read_csv(url)```We also have to aggregate data and clean the data. Since the dataset will have several entries for the various locations, we want to get the latest data.```def LatestData(data_set):	latest_entries  = []	for rest_location in data_set:		# find the latest health inspection score for this location in the data set		# add this health inspection to the latest entry. 	return cleaned_data```We also have to get location information from a data entry.```def GetLocationRestaraunt(data_set, restaurant) return data_set[restaurant][location]```
-### 2. Mapping Data
-We have to plot the data.
+﻿﻿
+# Component Specification
+
+## Software Components
+
+### 1. Cleaning data
+
+
+We have to aggregate and clean the data. The Census data contains a lot more information than is need for this project, and that information is spread throughout several datasets. The Census data also has customized column labels, that are essentially meaningless for our project. For this problem we have to extract desired columns from a dataset by:
+
 ```
-def MakeMap(data, filters)
-  plot(location for data subject to filters)
-  # filters include various constraints
-  return Map
-```
-### 3. Prediction Modeling (Time Permitting)
-(Since this is something that we'll do if time permits, we'll leave this mostly blank for now.)
-
-Broadly speaking we want to have something like [this][1].
-## Interactions
-As of now we don't know if it will be better to aggregate the data based on zip code or census block. It will depend on the ease of use for each data set.Broadly speaking, in the getting and cleaning data sections we'll build the functionality necessary to map the data properly.
-
-We are considering interactions that would filter our map given selections on corresponding histograms and charts. For example, if we had a correlation figure (scatter plot) that demonstrated the trend between median income and food safety rating, a user could select a group of points and those points would be filtered on the map. Depending on the package suite we end up using, the interactions might be more simple dropdown and radio button filters, informed by static visuals of the data. These might take the form:
+def dataframe_with_columns(data_frame, columns_list, new_names):
+    data_frame_subset = data_frame[columns_list] #extracts columns
+    data_frame_subset.columns = new_names #renames columns
+    return data_frame_subset
 ```
-def MultiSelect()
-  select points based on x and y encoding
+The above takes a data frame named `data_frame` extracts the columns with names in `columns_list` and then renames those columns by `new_names`.
 
-def MakeHistorgram()
-  plot demographic v. food safety rating
-  return Hist
 
-add MultiSelect() to Hist
+Some of the numerical data in the Census is not in the correct format we either want or need. For example, empty numerical values in the Census data are indicated by `-` which should be converted to `0`. We do this by:
+```
+def remove_dashes_from_data(data_frame, col):
+    for col_name in col:
+        vec = list(data_frame[col_name])
+        if vec[j] == "-":
+            do: vec[j] = 0
+        data_frame[col_name] = vec
+    return data_frame
+```
+The above code just changes `-` values to `0` values. 
 
-filter Map based on MultiSelect
+We also need functions to accomplish the following tasks:
+* Convert dataframe columns from type `int` to type `float` (and vice-versa).
+* Remove unnecessary rows from a dataframe
+* Convert a percentage information to a raw total information.
+
+
+### 2. Merging Data
+
+Once the data is cleaned, we have to merge the various data sources. This is done by something like
+```
+def merge_dataframes(census_1, census_2, food):
+    census_tot = merge(census_1, census_2, column='zipcode')
+    # merge the census data at the dataframe column named 'zipcode'
+    return merge(census_tot, food, column = 'zipcode')
 ```
 
-For radio buttons or dropdown, the pseudo code would be similar, but the selection would take the form:
+This will likely involve renaming columns so that the `census_1`, `census_2`, and `food` have a common column named `'zipcode'`.
+
+
+
+
+### 3. Mapping Data
+
+
+We have to plot the data. We do this in two ways. We create a `folium` map which includes only the food inspection score information. This is done by
 ```
-def MultiSelect(list)
-  dropdown menu with entries from list
+def make_folium_map():
+    plot(local, color)
+    #color is a product of the health inspection score at local
+    return map
 ```
-## Plan Outline
-A rough outline is as follows:* Clean the restaurant data and start performing some simple statistical tests on the set* Link the restaurant data with some of the census location information	* Include in this connections between demographic information and census location data* Map the data, and have radio buttons/dropdown menus in order to filter the restaurants by quality, or location associated with census information[1]: https://www.foodqualityandsafety.com/article/predictive-model-sets-priorities-for-chicago-restaurant-inspections/
+
+In order to utilize this connection with census demographic information, we use `altair`. We create a function of the form:
+```
+def make_altair_map(census_metric)
+    hist(food_score) 
+    #create a histogram showing total frequency of food_scores
+    color zipcodes by census_metric frequency
+    plot(restaurant locations linked with food scores)
+    return map
+```
+
+
+### 4. Example Notebook
+
+We create an example `JupyterLab` notebook that allows the user to plot and interact with the maps. 
+
+
+## Interactions
+
+The way the above components interact to accomplish the use case follows in a simple chain. In order to use the notebooks, i.e. for the user to use the product, we must be able to create the maps. In order to create the maps, we need to have the census data linked with the food inspection data. In order to link these data sets in an efficient manner, we have to clean and restrict the data.
+## Plan Outline
+
+
+A rough outline is as follows:
+
+* Clean the restaurant data and start performing some simple statistical tests on the set
+* Link the restaurant data with some of the census location information
+	* Include in this connections between demographic information and census location data
+* Map the data, and have radio buttons/dropdown menus in order to filter the restaurants by quality, or location associated with census information
+
