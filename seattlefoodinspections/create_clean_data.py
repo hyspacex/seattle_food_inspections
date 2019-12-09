@@ -3,10 +3,13 @@ Cleans and combines the census and INSPECTION data.
 '''
 #Import statements
 import pandas as pd
-from . import cleaning_functions as cf
-from . import merging_functions as mf
+import cleaning_functions as cf
+import merging_functions as mf
 
 #Constants
+NAME='Name'
+CITY='City'
+VIOLATIONTYPE='Violation Type'
 ZIPCODE = 'zipcode'
 LONGITITUDE = 'Longitude'
 INSPECTDATE = 'Inspection Date'
@@ -83,11 +86,27 @@ INSPECTION[INSPECTDATE] = pd.to_datetime(INSPECTION[INSPECTDATE])
 INSPECTION = INSPECTION.sort_values(
     by=[INSPECTDATE]
 ).drop_duplicates(subset=[RESTAURANTNAME, ADDRESS], keep='last')
+# dropping unnecessary columns 
+INSPECTION = INSPECTION.drop(
+    columns=[
+        "Inspection_Serial_Num",
+        "Violation_Record_ID",
+        "Phone",
+        "Program Identifier"
+    ]
+)
 # drop na/nan values in appropriate columns
 INSPECTION_CLEANED = INSPECTION.dropna(subset=[LONGITITUDE])
 INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[GRADE])
 INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[ZIPCODE])
+INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[NAME])
+INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[CITY])
+INSPECTION_CLEANED = INSPECTION_CLEANED.dropna(subset=[VIOLATIONTYPE])
 INSPECTION_CLEANED = INSPECTION_CLEANED.sort_values(by=[INSPECTDATE])
+# Capitalizing the columns to prevent duplication in enumerating
+INSPECTION_CLEANED[CITY] = INSPECTION_CLEANED[CITY].str.upper()
+INSPECTION_CLEANED[NAME] = INSPECTION_CLEANED[NAME].str.upper()
+INSPECTION_CLEANED[VIOLATIONTYPE] = INSPECTION_CLEANED[VIOLATIONTYPE].str.upper()
 # convert the data type of Zip Code to integer
 INSPECTION_CLEANED[ZIPCODE] = INSPECTION_CLEANED[ZIPCODE].astype(int)
 INSPECTION_ZIPS = INSPECTION_CLEANED[
