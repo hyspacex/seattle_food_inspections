@@ -5,7 +5,20 @@
 A visualization tool to view food inspection ratings in Seattle, WA and the median income of the surrounding area.
 
 ## Prerequisites
-Before continuing, you should have a version of Python 3 installed along with meeting the requirements found in `requirements.txt`.
+
+**All the required software is open source.**  The implementation was done using the following language and packages.  
+
+**Programming language:**   
+Python version 3.7  ([https://www.python.org/](https://www.python.org/))
+
+**Python packages needed:**
+- NumPy 1.17.4
+- pandas 0.25.3
+- Altair 3.3.0
+- matplotlib 3.1.2
+- Jupyter 1.0.0
+- Folium 0.10.1
+- GeoPandas 0.6.2
 
 ## Project Goal
 
