@@ -95,8 +95,8 @@ def data_from_percents_and_raw_totals(data_frame, column_list,
         data_frame (dataframe): dataframe to be cleaned
         column_list (list of str): list of columns to be cleaned
         tot_row (str): column that contains total values
-        new_list (list of str): list of column names 
-
+        new_list (list of str): list of column names
+        
     Returns:
         data_frame: cleaned dataframe
     '''

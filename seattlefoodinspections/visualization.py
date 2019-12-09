@@ -61,11 +61,11 @@ def make_altair_map(census_metric):
     '''
 
     #set certain constaints
-    COLOR = 'oranges' # color scale for inspection grade
-    if census_metric=='income':
-        METRIC = 'properties.Median_Income_Households'
-    elif census_metric=='married':
-        METRIC = 'properties.No_Married(%)'
+    gcolor = 'oranges' # color scale for inspection grade
+    if census_metric == 'income':
+        metric = 'properties.Median_Income_Households'
+    elif census_metric == 'married':
+        metric = 'properties.No_Married(%)'
 
 
     # import inspection dataset
@@ -95,13 +95,11 @@ def make_altair_map(census_metric):
         fill='lightgray',
         stroke='white'
     ).encode(
-        color=alt.Color(METRIC, type='quantitative',
-                        scale=alt.Scale(scheme='lighttealblue',
-                                        #domain=(50000, 120000)
-                        ),
+        color=alt.Color(metric, type='quantitative',
+                        scale=alt.Scale(scheme='lighttealblue'),
                         legend=alt.Legend(orient='left')),
         tooltip=[alt.Tooltip('properties.zipcode', type='ordinal'),
-                alt.Tooltip(METRIC, type='quantitative')]
+                 alt.Tooltip(metric, type='quantitative')]
     ).properties(
         width=600,
         height=600)
@@ -114,7 +112,7 @@ def make_altair_map(census_metric):
         tooltip=['Inspection Business Name', 'Grade'],
         color=alt.Color('Grade:O',
                         legend=None,
-                        scale=alt.Scale(scheme=COLOR, domain=(4, 3, 2, 1))
+                        scale=alt.Scale(scheme=gcolor, domain=(4, 3, 2, 1))
                         )
     ).transform_filter(multi)
 
@@ -124,7 +122,7 @@ def make_altair_map(census_metric):
         y='count()',
         color=alt.Color('Grade:O',
                         legend=None,
-                        scale=alt.Scale(scheme=COLOR, domain=(4, 3, 2, 1))
+                        scale=alt.Scale(scheme=gcolor, domain=(4, 3, 2, 1))
                         )
         )
 
