@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/hyspacex/Seattle-Food-Inspections.svg?branch=master)](https://travis-ci.com/hyspacex/Seattle-Food-Inspections)
 
+![Seattle Food Inspection Logo](docs/example_images/seattle_food_logo.png)
+
 # Seattle Food Inspection Project
 
 A visualization tool to view food inspection ratings in Seattle, WA and the median income of the surrounding area.
