@@ -47,11 +47,27 @@ def make_folium_map():
     display = folium_map.save("map.html")
     return display
 
-def make_altair_map():
+def make_altair_map(census_metric):
     '''
     function to make altair chlorpleth map based on census data overlayed
     with retaurants colored by their food inspection grade
+
+    Args:
+        census_metric (str): which census metric to plot on base map_data
+            one of ('income', 'married')
+
+    Returns:
+        interactive map
     '''
+
+    #set certain constaints
+    COLOR = 'oranges' # color scale for inspection grade
+    if census_metric=='income':
+        METRIC = 'properties.Median_Income_Households'
+    elif census_metric=='married':
+        METRIC = 'properties.No_Married(%)'
+
+
     # import inspection dataset
     inspection = pd.read_csv('./data/clean_data/combined.csv',
                              low_memory=False)
@@ -79,29 +95,40 @@ def make_altair_map():
         fill='lightgray',
         stroke='white'
     ).encode(
-        color=alt.Color('properties.Median_Income_Households:Q',
-                        scale=alt.Scale(domain=(50000, 150000))),
-        tooltip=['properties.zipcode:Q', 'properties.Median_Income_Households:Q']
+        color=alt.Color(METRIC, type='quantitative',
+                        scale=alt.Scale(scheme='lighttealblue',
+                                        #domain=(50000, 120000)
+                        ),
+                        legend=alt.Legend(orient='left')),
+        tooltip=[alt.Tooltip('properties.zipcode', type='ordinal'),
+                alt.Tooltip(METRIC, type='quantitative')]
     ).properties(
         width=600,
         height=600)
 
-    # add a few restaurants
+    # add restaurants
     restaurant_grades = inspection.head(5000)
     restaurants = alt.Chart(restaurant_grades).mark_circle().encode(
         longitude='Longitude:Q',
         latitude='Latitude:Q',
         tooltip=['Inspection Business Name', 'Grade'],
-        color=alt.Color('Grade:N', legend=None)
+        color=alt.Color('Grade:O',
+                        legend=None,
+                        scale=alt.Scale(scheme=COLOR, domain=(4, 3, 2, 1))
+                        )
     ).transform_filter(multi)
 
     # histogram of inspection results
     hist = alt.Chart(restaurant_grades).mark_bar().encode(
-        x='Grade:N',
+        x='Grade:O',
         y='count()',
-        color='Grade:N')
+        color=alt.Color('Grade:O',
+                        legend=None,
+                        scale=alt.Scale(scheme=COLOR, domain=(4, 3, 2, 1))
+                        )
+        )
 
-
+    # add selection function to histogram and base the filter on the selection
     hist_select = alt.layer(
         hist.add_selection(multi).encode(color=alt.value('lightgrey')),
         hist.transform_filter(multi)
