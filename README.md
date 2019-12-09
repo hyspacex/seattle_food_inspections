@@ -35,7 +35,7 @@ In order to use the project proceed to open with JupyterLab the file `seattlefoo
 Running the first function `make_folium_map()` should produce an output which looks like:
 ![Folium Example Image](docs/example_images/folium_example.jpg)
 With this image you can both pan and zoom into a desired location and find the inspection score for many restaurants in Seattle. For example, once you are down to a block-by-block view, you can start to see some restaurants locations. You can click on the blue pointer to produce the latest rating for the selected restaurant:
-![Folium Example Restaurant](docs/example_images/folium_zoom_example.jpg)
+![Folium Example Restaurant](docs/example_images/folium_zoom_example.png)
 
 Running the second function `make_altair_map('income')` should produce an output like the following:
 ![Altair Example](docs/example_images/altair_example.png)
