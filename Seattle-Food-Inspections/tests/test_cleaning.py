@@ -5,8 +5,8 @@ Tests for the cleaning_functions.py file
 import pandas as pd
 
 # Import the cleaning_functions
-from .. import cleaning_functions as cf
-from .. import merging_functions as mf
+import cleaning_functions as cf
+import merging_functions as mf
 
 def test_dataframe_with_columns1():
     '''
