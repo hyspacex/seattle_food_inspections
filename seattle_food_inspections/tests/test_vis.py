@@ -7,9 +7,15 @@ Tests for the visualization.py file
 from .. import visualization as vz
 
 def test_folium():
+    '''
+    Tests vz.make_folium_map
+    '''
     test_map = vz.make_folium_map(True)
     assert str(type(test_map)) == "<class 'folium.folium.Map'>"
 
 def test_altair():
+    '''
+    Tests vz.make_altair_map
+    '''
     t_info = vz.make_altair_map('income')
     assert str(type(t_info)) == "<class 'altair.vegalite.v3.api.HConcatChart'>"
