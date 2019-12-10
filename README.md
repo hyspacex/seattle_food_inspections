@@ -11,6 +11,7 @@ A visualization tool to view food inspection ratings in Seattle, WA and the medi
 **All the required software is open source.**  The implementation was done using the following language and packages.  
 
 **Programming language:**   
+
 Python version 3.7  ([https://www.python.org/](https://www.python.org/))
 
 **Python packages needed:**
@@ -21,6 +22,16 @@ Python version 3.7  ([https://www.python.org/](https://www.python.org/))
 - Jupyter 1.0.0
 - Folium 0.10.1
 - GeoPandas 0.6.2
+
+## Quick Start
+
+Run the file `example.ipynb` in the examples folder in a Jupyter notebook.
+
+"requirements.txt” is a file containing a list of items to be installed using [pip install](https://pip.pypa.io/en/stable/reference/pip_install/#pip-install) like so:
+
+> ```bash
+> pip install -r requirements.txt
+> ```
 
 ## Project Goal
 
