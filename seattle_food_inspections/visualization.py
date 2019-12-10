@@ -9,10 +9,14 @@ from folium.plugins import MarkerCluster # pylint: disable=unused-import
 import altair as alt
 import geopandas as gpd
 
-def make_folium_map():
+def make_folium_map(boo_val=False):
     '''
     function for making folium map of seattle restaurants that can be zoomed
-    and navigated
+    and navigated.
+
+    Args:
+        boo_val (boolean): default value is false, used to output a folium map
+                           when True
     '''
     map_data = pd.read_csv('./data/clean_data/combined.csv',
                            low_memory=False)
@@ -45,7 +49,10 @@ def make_folium_map():
             icon=folium.Icon(color=row['marker_color'])
         ).add_to(marker_cluster)
     display = folium_map.save("map.html")
-    return display
+    if boo_val:
+        return folium_map
+    else:
+        return display
 
 def make_altair_map(census_metric):
     '''
