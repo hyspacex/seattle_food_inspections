@@ -63,8 +63,8 @@ def make_altair_map(census_metric):
     #set certain constaints
     gcolor = 'oranges' # color scale for inspection grade
 
-    if not census_metric in ['income','married']:
-        raise ValueError('Your input is not one of income or marriage')
+    if not census_metric in ['income', 'married']:
+        raise ValueError('Your input is not one of [income] or [married]')
 
     if census_metric == 'income':
         metric = 'properties.Median_Income_Households'
