@@ -11,11 +11,37 @@ NAME = 'Name'
 CITY = 'City'
 VIOLATIONTYPE = 'Violation Type'
 ZIPCODE = 'zipcode'
+ZIPCODESPACE = 'Zip Code'
 LONGITITUDE = 'Longitude'
 INSPECTDATE = 'Inspection Date'
 RESTAURANTNAME = 'Program Identifier'
 ADDRESS = 'Address'
 GRADE = 'Grade'
+GEOID = 'GEO.id2'
+HC01 = 'HC01_EST_VC01'
+HC02 = 'HC02_EST_VC01'
+HC03 = 'HC03_EST_VC01'
+HC04 = 'HC04_EST_VC01'
+HC05 = 'HC05_EST_VC01'
+HC06 = 'HC06_EST_VC01',
+POPULATION = 'Population'
+MARRIED = 'No_Married(%)'
+WIDOWED = 'Widowed(%)'
+DIVORCED = 'Divorced(%)'
+SEPARATED = 'Separated(%)'
+NEVERMARRIED = 'Never_Married(%)'
+MARRIEDTOT = 'No_Married'
+WIDOWEDTOT = 'Widowed'
+DIVORCEDTOT = 'Divorced'
+SEAPARATEDTOT = 'Separated'
+NEVERMARRIEDTOT = 'Never_Married'
+HOUSEHOLDS = 'Number_Households'
+PERDISTHOUSE = 'Percent_Distribution_Housesholds'
+MEDINCOME = 'Median_Income_Households'
+SERIAL = 'Inspection_Serial_Num'
+VIOLATIONID = 'Violation_Record_ID'
+PHONE = 'Phone'
+PROGID = 'Program Identifier'
 SEATTLEZIPS = [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108, 98109,
                98112, 98115, 98116, 98117, 98118, 98119, 98121, 98122, 98125,
                98126, 98133, 98134, 98136, 98144, 98146, 98154, 98155, 98164,
@@ -28,30 +54,24 @@ DF_MARITAL = pd.read_csv(
 DF_MARITAL = cf.remove_row_from_data_frame(DF_MARITAL)
 # Extracts and rename the proper columns
 DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
-                                       ['GEO.id2', 'HC01_EST_VC01',
-                                        'HC02_EST_VC01', 'HC03_EST_VC01',
-                                        'HC04_EST_VC01', 'HC05_EST_VC01',
-                                        'HC06_EST_VC01'],
-                                       ['zipcode', 'Population',
-                                        'No_Married(%)', 'Widowed(%)',
-                                        'Divorced(%)', 'Separated(%)',
-                                        'Never_Married(%)'])
+                                       [GEOID, HC01, HC02, HC03, HC04, HC05,
+                                        HC06],
+                                       [ZIPCODE, POPULATION, MARRIED, WIDOWED,
+                                        DIVORCED, SEPARATED, NEVERMARRIED])
 # Defining an oft used list of column names.
-PERCENT_COLUMNS = ['No_Married(%)', 'Widowed(%)', 'Divorced(%)', 'Separated(%)',
-                   'Never_Married(%)']
+PERCENT_COLUMNS = [MARRIED, WIDOWED, DIVORCED, SEPARATED, NEVERMARRIED]
 # Remove dashes from the data
 DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
 # Turns the percents to floats and the population number to an int
 DF_MARITAL = cf.columns_to_float(DF_MARITAL, PERCENT_COLUMNS)
-DF_MARITAL = cf.columns_to_int(DF_MARITAL, ['Population', 'zipcode'])
+DF_MARITAL = cf.columns_to_int(DF_MARITAL, [POPULATION, ZIPCODE])
 # Defining another colection of column names.
-RAW_TOT_COLUMNS = ['No_Married', 'Widowed', 'Divorced', 'Separated',
-                   'Never_Married']
+RAW_TOT_COLUMNS = [MARRIEDTOT, WIDOWEDTOT, DIVORCEDTOT, SEAPARATEDTOT,
+                   NEVERMARRIEDTOT]
 # Create the new columns which contain the raw totals for all the
 # statistics in the marriage center.
 DF_MARITAL = cf.data_from_percents_and_raw_totals(DF_MARITAL, PERCENT_COLUMNS,
-                                                  "Population",
-                                                  RAW_TOT_COLUMNS)
+                                                  POPULATION, RAW_TOT_COLUMNS)
 DF_MARITAL = cf.columns_to_int(DF_MARITAL, RAW_TOT_COLUMNS)
 
 
@@ -62,24 +82,23 @@ DF_INCOME = pd.read_csv("./data/raw_data/Income_ACS_17_5YR_S1903_with_ann.csv")
 DF_INCOME = cf.remove_row_from_data_frame(DF_INCOME)
 # Extract the useful rows
 DF_INCOME = cf.dataframe_with_columns(DF_INCOME,
-                                      ['GEO.id2', 'HC01_EST_VC02',
-                                       'HC02_EST_VC02', 'HC03_EST_VC02'],
-                                      ['zipcode', 'Number_Households',
-                                       'Percent_Distribution_Housesholds',
-                                       'Median_Income_Households'])
+                                      [GEOID, HC01, HC02, HC03],
+                                      [ZIPCODE, HOUSEHOLDS,
+                                       PERDISTHOUSE,
+                                       MEDINCOME])
 # Remove dashes from the data, sets them as zero.
 DF_INCOME = cf.remove_dashes_from_data(DF_INCOME,
-                                       ['Number_Households',
-                                        'Percent_Distribution_Housesholds',
-                                        'Median_Income_Households'])
+                                       [HOUSEHOLDS,
+                                        PERDISTHOUSE,
+                                        MEDINCOME])
 # zipcode to integer for merging purposes
-DF_INCOME = cf.columns_to_int(DF_INCOME, ['zipcode'])
+DF_INCOME = cf.columns_to_int(DF_INCOME, [ZIPCODE])
 
 ### Food INSPECTION data frame creation
 INSPECTION = pd.read_csv('./data/raw_data/Food_Establishment_INSPECTION.csv',
                          low_memory=False)
 #rename columns for consistency
-INSPECTION.rename(columns={'Zip Code': ZIPCODE}, inplace=True)
+INSPECTION.rename(columns={ZIPCODESPACE: ZIPCODE}, inplace=True)
 # convert dates in 'INSPECTION Date' to date time
 INSPECTION[INSPECTDATE] = pd.to_datetime(INSPECTION[INSPECTDATE])
 # sort by INSPECTION date then remove duplicates
@@ -89,10 +108,10 @@ INSPECTION = INSPECTION.sort_values(
 # dropping unnecessary columns
 INSPECTION = INSPECTION.drop(
     columns=[
-        "Inspection_Serial_Num",
-        "Violation_Record_ID",
-        "Phone",
-        "Program Identifier"
+        SERIAL,
+        VIOLATIONID,
+        PHONE,
+        PROGID
     ]
 )
 # drop na/nan values in appropriate columns
@@ -117,7 +136,7 @@ INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv', index=False)
 
 ##COMBINE DATAFRAMES
 # first, combine census data
-DF_TOTAL = mf.merge_dataframes(DF_MARITAL, DF_INCOME, 'zipcode')
+DF_TOTAL = mf.merge_dataframes(DF_MARITAL, DF_INCOME, ZIPCODE)
 #output combined census data
 DF_TOTAL.to_csv('./data/clean_data/clean_census.csv', index=False)
 
