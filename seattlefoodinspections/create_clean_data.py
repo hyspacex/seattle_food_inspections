@@ -3,13 +3,13 @@ Cleans and combines the census and INSPECTION data.
 '''
 #Import statements
 import pandas as pd
-import cleaning_functions as cf
-import merging_functions as mf
+from . import cleaning_functions as cf
+from . import merging_functions as mf
 
 #Constants
-NAME='Name'
-CITY='City'
-VIOLATIONTYPE='Violation Type'
+NAME = 'Name'
+CITY = 'City'
+VIOLATIONTYPE = 'Violation Type'
 ZIPCODE = 'zipcode'
 LONGITITUDE = 'Longitude'
 INSPECTDATE = 'Inspection Date'
@@ -86,7 +86,7 @@ INSPECTION[INSPECTDATE] = pd.to_datetime(INSPECTION[INSPECTDATE])
 INSPECTION = INSPECTION.sort_values(
     by=[INSPECTDATE]
 ).drop_duplicates(subset=[RESTAURANTNAME, ADDRESS], keep='last')
-# dropping unnecessary columns 
+# dropping unnecessary columns
 INSPECTION = INSPECTION.drop(
     columns=[
         "Inspection_Serial_Num",
