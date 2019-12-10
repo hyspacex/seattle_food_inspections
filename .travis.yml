@@ -4,6 +4,6 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - pylint seattlefoodinspections/*.py
-  - pylint seattlefoodinspections/tests/*.py
+  - pylint Seattle-Food-Inspections/*.py
+  - pylint Seattle-Food-Inspections/tests/*.py
   - pytest
