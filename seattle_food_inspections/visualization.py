@@ -18,8 +18,9 @@ def make_folium_map(boo_val=False):
         boo_val (boolean): default value is false, used to output a folium map
                            when True
     '''
-    map_data = pd.read_csv(os.path.join(os.path.dirname(__file__), "./data/clean_data/combined.csv"),
-                           low_memory=False)
+    map_data = pd.read_csv(os.path.join(os.path.dirname(__file__), 
+                            "./data/clean_data/combined.csv"),
+                            low_memory=False)
     # associate color with inspection result
     map_data['marker_color'] = map_data['Grade']
     map_data['marker_color'] = map_data['marker_color'].replace([1.0], 'lightgreen')
