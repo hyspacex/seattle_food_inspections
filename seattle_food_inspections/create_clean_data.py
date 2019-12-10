@@ -48,12 +48,12 @@ SEATTLEZIPS = [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108, 98109,
                98168, 98174, 98177, 98178, 98195, 98199]
 
 ### Marital dataframe creation
-DF_MARITAL = pd.read_csv(
+df_marital = pd.read_csv(
     './data/raw_data/Marital_ACS_17_5YR_S1201_with_ann.csv')
 # Removes the top row, which is useless
-DF_MARITAL = cf.remove_row_from_data_frame(DF_MARITAL)
+df_marital = cf.remove_row_from_data_frame(df_marital)
 # Extracts and rename the proper columns
-DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
+df_marital = cf.dataframe_with_columns(df_marital,
                                        [GEOID, HC01, HC02, HC03, HC04, HC05,
                                         HC06],
                                        [ZIPCODE, POPULATION, MARRIED, WIDOWED,
@@ -61,18 +61,18 @@ DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
 # Defining an oft used list of column names.
 PERCENT_COLUMNS = [MARRIED, WIDOWED, DIVORCED, SEPARATED, NEVERMARRIED]
 # Remove dashes from the data
-DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
+df_marital = cf.remove_dashes_from_data(df_marital, PERCENT_COLUMNS)
 # Turns the percents to floats and the population number to an int
-DF_MARITAL = cf.columns_to_float(DF_MARITAL, PERCENT_COLUMNS)
-DF_MARITAL = cf.columns_to_int(DF_MARITAL, [POPULATION, ZIPCODE])
+df_marital = cf.columns_to_float(df_marital, PERCENT_COLUMNS)
+df_marital = cf.columns_to_int(df_marital, [POPULATION, ZIPCODE])
 # Defining another colection of column names.
 RAW_TOT_COLUMNS = [MARRIEDTOT, WIDOWEDTOT, DIVORCEDTOT, SEAPARATEDTOT,
                    NEVERMARRIEDTOT]
 # Create the new columns which contain the raw totals for all the
 # statistics in the marriage center.
-DF_MARITAL = cf.data_from_percents_and_raw_totals(DF_MARITAL, PERCENT_COLUMNS,
+df_marital = cf.data_from_percents_and_raw_totals(df_marital, PERCENT_COLUMNS,
                                                   POPULATION, RAW_TOT_COLUMNS)
-DF_MARITAL = cf.columns_to_int(DF_MARITAL, RAW_TOT_COLUMNS)
+df_marital = cf.columns_to_int(df_marital, RAW_TOT_COLUMNS)
 
 
 
@@ -136,7 +136,7 @@ INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv', index=False)
 
 ##COMBINE DATAFRAMES
 # first, combine census data
-DF_TOTAL = mf.merge_dataframes(DF_MARITAL, DF_INCOME, ZIPCODE)
+DF_TOTAL = mf.merge_dataframes(df_marital, DF_INCOME, ZIPCODE)
 #output combined census data
 DF_TOTAL.to_csv('./data/clean_data/clean_census.csv', index=False)
 
