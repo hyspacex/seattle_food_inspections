@@ -25,7 +25,7 @@ Python version 3.7  ([https://www.python.org/](https://www.python.org/))
 
 ## Quick Start
 
-Run the file `example.ipynb` in the examples folder in a Jupyter notebook.
+Run the file `example.ipynb` in the *example* folder in a Jupyter notebook.
 
 "requirements.txt” is a file containing a list of items to be installed using [pip install](https://pip.pypa.io/en/stable/reference/pip_install/#pip-install) like so:
 
