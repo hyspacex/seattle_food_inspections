@@ -42,18 +42,23 @@ SERIAL = 'Inspection_Serial_Num'
 VIOLATIONID = 'Violation_Record_ID'
 PHONE = 'Phone'
 PROGID = 'Program Identifier'
+MARITAL_CENSUS = './data/raw_data/Marital_ACS_17_5YR_S1201_with_ann.csv'
+INCOME_CENSUS = './data/raw_data/Income_ACS_17_5YR_S1903_with_ann.csv'
+FOOD_INSPECTION = './data/raw_data/Food_Establishment_INSPECTION.csv'
+INSPECTION_OUTPUT = './data/clean_data/clean_inspection.csv'
+CENSUS_OUTPUT = './data/clean_data/clean_census.csv'
+COMBINED_OUTPUT = './data/clean_data/combined.csv'
 SEATTLEZIPS = [98101, 98102, 98103, 98104, 98105, 98106, 98107, 98108, 98109,
                98112, 98115, 98116, 98117, 98118, 98119, 98121, 98122, 98125,
                98126, 98133, 98134, 98136, 98144, 98146, 98154, 98155, 98164,
                98168, 98174, 98177, 98178, 98195, 98199]
 
 ### Marital dataframe creation
-df_marital = pd.read_csv(
-    './data/raw_data/Marital_ACS_17_5YR_S1201_with_ann.csv')
+DF_MARITAL = pd.read_csv(MARITAL_CENSUS)
 # Removes the top row, which is useless
-df_marital = cf.remove_row_from_data_frame(df_marital)
+DF_MARITAL = cf.remove_row_from_data_frame(DF_MARITAL)
 # Extracts and rename the proper columns
-df_marital = cf.dataframe_with_columns(df_marital,
+DF_MARITAL = cf.dataframe_with_columns(DF_MARITAL,
                                        [GEOID, HC01, HC02, HC03, HC04, HC05,
                                         HC06],
                                        [ZIPCODE, POPULATION, MARRIED, WIDOWED,
@@ -61,23 +66,23 @@ df_marital = cf.dataframe_with_columns(df_marital,
 # Defining an oft used list of column names.
 PERCENT_COLUMNS = [MARRIED, WIDOWED, DIVORCED, SEPARATED, NEVERMARRIED]
 # Remove dashes from the data
-df_marital = cf.remove_dashes_from_data(df_marital, PERCENT_COLUMNS)
+DF_MARITAL = cf.remove_dashes_from_data(DF_MARITAL, PERCENT_COLUMNS)
 # Turns the percents to floats and the population number to an int
-df_marital = cf.columns_to_float(df_marital, PERCENT_COLUMNS)
-df_marital = cf.columns_to_int(df_marital, [POPULATION, ZIPCODE])
+DF_MARITAL = cf.columns_to_float(DF_MARITAL, PERCENT_COLUMNS)
+DF_MARITAL = cf.columns_to_int(DF_MARITAL, [POPULATION, ZIPCODE])
 # Defining another colection of column names.
 RAW_TOT_COLUMNS = [MARRIEDTOT, WIDOWEDTOT, DIVORCEDTOT, SEAPARATEDTOT,
                    NEVERMARRIEDTOT]
 # Create the new columns which contain the raw totals for all the
 # statistics in the marriage center.
-df_marital = cf.data_from_percents_and_raw_totals(df_marital, PERCENT_COLUMNS,
+DF_MARITAL = cf.data_from_percents_and_raw_totals(DF_MARITAL, PERCENT_COLUMNS,
                                                   POPULATION, RAW_TOT_COLUMNS)
-df_marital = cf.columns_to_int(df_marital, RAW_TOT_COLUMNS)
+DF_MARITAL = cf.columns_to_int(DF_MARITAL, RAW_TOT_COLUMNS)
 
 
 
 ### INCOME INFORMATION
-DF_INCOME = pd.read_csv("./data/raw_data/Income_ACS_17_5YR_S1903_with_ann.csv")
+DF_INCOME = pd.read_csv(INCOME_CENSUS)
 # Remove an extra row
 DF_INCOME = cf.remove_row_from_data_frame(DF_INCOME)
 # Extract the useful rows
@@ -95,7 +100,7 @@ DF_INCOME = cf.remove_dashes_from_data(DF_INCOME,
 DF_INCOME = cf.columns_to_int(DF_INCOME, [ZIPCODE])
 
 ### Food INSPECTION data frame creation
-INSPECTION = pd.read_csv('./data/raw_data/Food_Establishment_INSPECTION.csv',
+INSPECTION = pd.read_csv(FOOD_INSPECTION,
                          low_memory=False)
 #rename columns for consistency
 INSPECTION.rename(columns={ZIPCODESPACE: ZIPCODE}, inplace=True)
@@ -130,16 +135,16 @@ INSPECTION_CLEANED[VIOLATIONTYPE] = INSPECTION_CLEANED[VIOLATIONTYPE].str.upper(
 INSPECTION_CLEANED[ZIPCODE] = INSPECTION_CLEANED[ZIPCODE].astype(int)
 INSPECTION_ZIPS = INSPECTION_CLEANED[
     INSPECTION_CLEANED[ZIPCODE].isin(SEATTLEZIPS)]
-INSPECTION_ZIPS.to_csv('./data/clean_data/clean_inspection.csv', index=False)
+INSPECTION_ZIPS.to_csv(INSPECTION_OUTPUT, index=False)
 
 
 
 ##COMBINE DATAFRAMES
 # first, combine census data
-DF_TOTAL = mf.merge_dataframes(df_marital, DF_INCOME, ZIPCODE)
+DF_TOTAL = mf.merge_dataframes(DF_MARITAL, DF_INCOME, ZIPCODE)
 #output combined census data
-DF_TOTAL.to_csv('./data/clean_data/clean_census.csv', index=False)
+DF_TOTAL.to_csv(CENSUS_OUTPUT, index=False)
 
 # next, combine census data with food inspection dataset
 COMBINED = mf.merge_dataframes(INSPECTION_ZIPS, DF_TOTAL, ZIPCODE)
-COMBINED.to_csv('./data/clean_data/combined.csv', index=False)
+COMBINED.to_csv(COMBINED_OUTPUT, index=False)
