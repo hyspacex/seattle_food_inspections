@@ -8,7 +8,7 @@ from .. import visualization as vz
 
 def test_folium():
     test_map = vz.make_folium_map(True)
-    assert str(type(map)) == "<class 'folium.folium.Map'>"
+    assert str(type(test_map)) == "<class 'folium.folium.Map'>"
 
 def test_altair():
     t_info = vz.make_altair_map('income')
