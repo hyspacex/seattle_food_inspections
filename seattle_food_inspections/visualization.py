@@ -21,7 +21,7 @@ def make_folium_map(boo_val=False):
     '''
     map_data = pd.read_csv(os.path.join(os.path.dirname(__file__),
                                         "./data/clean_data/combined.csv"),
-                                        low_memory=False)
+                           low_memory=False)
     # associate color with inspection result
     map_data['marker_color'] = map_data['Grade']
     map_data['marker_color'] = map_data['marker_color'].replace([1.0], 'lightgreen')
@@ -85,8 +85,8 @@ def make_altair_map(census_metric):
 
     # import inspection dataset
     inspection = pd.read_csv(os.path.join(os.path.dirname(__file__),
-                                        "./data/clean_data/combined.csv"),
-                                        low_memory=False)
+                                          "./data/clean_data/combined.csv"),
+                             low_memory=False)
     #import seattle zip codes
     seattlezip_geojson = 'https://raw.githubusercontent.com/seattleio/seattle'\
                           '-boundaries-data/master/data/zip-codes.geojson'
